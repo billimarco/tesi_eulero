@@ -1,19 +1,20 @@
 package msarchitecture.archsmodeling;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.oristool.eulero.ui.ActivityViewer;
 
 public class MicroserviceType{
     private String name_type;
-    private float qos_CDF;
-    private float completation_time_CDF;
+    private double[] qos_CDF;
+    private double[] completation_time_CDF;
     private boolean entry_point;
 
     private ArrayList<ConnectionMSType> connections;
 
-    public MicroserviceType(String name_type,float qos_CDF,float completation_time_CDF,boolean entry_point){
+    public MicroserviceType(String name_type,boolean entry_point){
         this.name_type=name_type;
-        this.qos_CDF=qos_CDF;
-        this.completation_time_CDF=completation_time_CDF;
         this.entry_point=entry_point;
         this.connections = new ArrayList<>();
     }
@@ -26,19 +27,19 @@ public class MicroserviceType{
 		this.name_type = name_type;
 	}
 
-	public float getQos_CDF() {
+	public double[] getQos_CDF() {
 		return this.qos_CDF;
 	}
 
-	public void setQos_CDF(float qos_CDF) {
+	public void setQos_CDF(double[] qos_CDF) {
 		this.qos_CDF = qos_CDF;
 	}
 
-	public float getCompletation_time_CDF() {
+	public double[] getCompletation_time_CDF() {
 		return this.completation_time_CDF;
 	}
 
-	public void setCompletation_time_CDF(float completation_time_CDF) {
+	public void setCompletation_time_CDF(double[] completation_time_CDF) {
 		this.completation_time_CDF = completation_time_CDF;
 	}
 
@@ -75,5 +76,13 @@ public class MicroserviceType{
                 return true;
         }
         return false;
+    }
+
+    public void plotQos_CDF(){
+        ActivityViewer.plot("QOS-"+name_type, List.of(""), getQos_CDF().length*0.01, 0.01, getQos_CDF());
+    }
+
+    public void plotCompletation_Time_CDF(){
+        ActivityViewer.plot("CompletationTime-"+name_type, List.of(""), getCompletation_time_CDF().length*0.01, 0.01, getCompletation_time_CDF());
     }
 }

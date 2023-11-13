@@ -23,14 +23,14 @@ public class MicroserviceTest {
 
     @Before
     public void initMethod() {
-        mst_1 = new MicroserviceType("1", 5, 5, true);
-        mst_2 = new MicroserviceType("2", 5, 5, false);
-        mst_3 = new MicroserviceType("3", 5, 5, false);
+        mst_1 = new MicroserviceType("1", true);
+        mst_2 = new MicroserviceType("2", false);
+        mst_3 = new MicroserviceType("3", false);
         res_cloud = new Resources(12, 16);
         cloud = new CloudLocation(res_cloud);
-        ms_1 = new Microservice(0, 0, mst_1, cloud);
-        ms_2 = new Microservice(0, 0, mst_2, cloud);
-        ms_3 = new Microservice(0, 0, mst_3, cloud);
+        ms_1 = new Microservice(0, mst_1, cloud);
+        ms_2 = new Microservice(0, mst_2, cloud);
+        ms_3 = new Microservice(0, mst_3, cloud);
     }
 
     @Test

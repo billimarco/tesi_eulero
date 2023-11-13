@@ -14,7 +14,7 @@ public class Controller{
 
         //add microservices to cloud and link them
         HashMap<String,Microservice> microservice_map = new HashMap<>();
-        Microservice start_ms = new Microservice(50,20,type,cloud);
+        Microservice start_ms = new Microservice(20,type,cloud);
         ArrayList<MicroserviceType> microserviceType_list_cloud = new ArrayList<>();
         takeMicroserviceTypeConnected(microserviceType_list_cloud, type);
         microservice_map.put(type.getName_type()+"_cloud",start_ms);
@@ -24,7 +24,7 @@ public class Controller{
                 if(microservice_map.containsKey(add_to_cloud_mst.getName_type()+"_cloud")){
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(microservice_map.get(add_to_cloud_mst.getName_type()+"_cloud"));
                 }else{
-                    Microservice new_ms_to_cloud = new Microservice(50,20,add_to_cloud_mst,cloud);
+                    Microservice new_ms_to_cloud = new Microservice(20,add_to_cloud_mst,cloud);
                     microservice_map.put(add_to_cloud_mst.getName_type()+"_cloud",new_ms_to_cloud);
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(new_ms_to_cloud);
                 }
@@ -34,7 +34,7 @@ public class Controller{
         //create microservices on edge
         for(MicroserviceType next_mst : microserviceType_list_edge){
             if(!microservice_map.containsKey(next_mst.getName_type()+"_edge")){
-                Microservice new_ms_to_edge = new Microservice(60,20,next_mst,edge);
+                Microservice new_ms_to_edge = new Microservice(20,next_mst,edge);
                 microservice_map.put(next_mst.getName_type()+"_edge",new_ms_to_edge);
             }
         }

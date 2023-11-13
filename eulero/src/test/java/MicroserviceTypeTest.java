@@ -17,9 +17,9 @@ public class MicroserviceTypeTest {
 
     @Before
     public void initMethod() {
-        mst_1 = new MicroserviceType("1", 5, 5, true);
-        mst_2 = new MicroserviceType("2", 5, 5, false);
-        mst_3 = new MicroserviceType("3", 5, 5, false);
+        mst_1 = new MicroserviceType("1", true);
+        mst_2 = new MicroserviceType("2", false);
+        mst_3 = new MicroserviceType("3", false);
     }
 
     @Test

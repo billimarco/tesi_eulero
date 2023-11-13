@@ -32,11 +32,11 @@ public class BuildCorrectGraphTest {
 
     @Test
     public void createServiceMeshOfGraph1(){
-        MicroserviceType mst_1 = new MicroserviceType("1", 5, 5, true);
-        MicroserviceType mst_2 = new MicroserviceType("2", 5, 5, false);
-        MicroserviceType mst_3 = new MicroserviceType("3", 5, 5, false);
-        MicroserviceType mst_4 = new MicroserviceType("4", 5, 5, false);
-        MicroserviceType mst_5 = new MicroserviceType("5", 5, 5, false);
+        MicroserviceType mst_1 = new MicroserviceType("1", true);
+        MicroserviceType mst_2 = new MicroserviceType("2", false);
+        MicroserviceType mst_3 = new MicroserviceType("3", false);
+        MicroserviceType mst_4 = new MicroserviceType("4", false);
+        MicroserviceType mst_5 = new MicroserviceType("5", false);
         mst_1.addConnection(mst_2, 10);
         mst_1.addConnection(mst_3, 25);
         mst_1.addConnection(mst_4, 100);
@@ -52,12 +52,12 @@ public class BuildCorrectGraphTest {
 
     @Test
     public void createServiceMeshOfGraph2(){
-        MicroserviceType mst_1 = new MicroserviceType("1", 5, 5, true);
-        MicroserviceType mst_2 = new MicroserviceType("2", 5, 5, false);
-        MicroserviceType mst_3 = new MicroserviceType("3", 5, 5, false);
-        MicroserviceType mst_4 = new MicroserviceType("4", 5, 5, false);
-        MicroserviceType mst_5 = new MicroserviceType("5", 5, 5, false);
-        MicroserviceType mst_6 = new MicroserviceType("6", 5, 5, false);
+        MicroserviceType mst_1 = new MicroserviceType("1", true);
+        MicroserviceType mst_2 = new MicroserviceType("2", false);
+        MicroserviceType mst_3 = new MicroserviceType("3", false);
+        MicroserviceType mst_4 = new MicroserviceType("4", false);
+        MicroserviceType mst_5 = new MicroserviceType("5", false);
+        MicroserviceType mst_6 = new MicroserviceType("6", false);
         mst_1.addConnection(mst_2, 10);
         mst_1.addConnection(mst_3, 25);
         mst_3.addConnection(mst_4, 100);
@@ -74,9 +74,9 @@ public class BuildCorrectGraphTest {
 
     @Test
     public void createServiceMeshOfGraph3(){
-        MicroserviceType mst_1 = new MicroserviceType("1", 5, 5, true);
-        MicroserviceType mst_2 = new MicroserviceType("2", 5, 5, false);
-        MicroserviceType mst_3 = new MicroserviceType("3", 5, 5, false);
+        MicroserviceType mst_1 = new MicroserviceType("1", true);
+        MicroserviceType mst_2 = new MicroserviceType("2", false);
+        MicroserviceType mst_3 = new MicroserviceType("3", false);
         mst_1.addConnection(mst_2, 10);
         mst_1.addConnection(mst_3, 25);
         HashMap<String,Microservice> ms = cont.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_3)), cloud, edge);
@@ -90,11 +90,11 @@ public class BuildCorrectGraphTest {
 
     @Test
     public void createServiceMeshOfGraph4(){
-        MicroserviceType mst_1 = new MicroserviceType("1", 5, 5, true);
-        MicroserviceType mst_2 = new MicroserviceType("2", 5, 5, false);
-        MicroserviceType mst_3 = new MicroserviceType("3", 5, 5, false);
-        MicroserviceType mst_4 = new MicroserviceType("4", 5, 5, false);
-        MicroserviceType mst_5 = new MicroserviceType("5", 5, 5, false);
+        MicroserviceType mst_1 = new MicroserviceType("1", true);
+        MicroserviceType mst_2 = new MicroserviceType("2", false);
+        MicroserviceType mst_3 = new MicroserviceType("3", false);
+        MicroserviceType mst_4 = new MicroserviceType("4", false);
+        MicroserviceType mst_5 = new MicroserviceType("5", false);
         mst_1.addConnection(mst_2, 10);
         mst_1.addConnection(mst_3, 25);
         mst_1.addConnection(mst_4, 100);
@@ -111,10 +111,10 @@ public class BuildCorrectGraphTest {
 
     @Test
     public void createServiceMeshOfGraph5(){
-        MicroserviceType mst_1 = new MicroserviceType("1", 5, 5, true);
-        MicroserviceType mst_2 = new MicroserviceType("2", 5, 5, false);
-        MicroserviceType mst_3 = new MicroserviceType("3", 5, 5, false);
-        MicroserviceType mst_4 = new MicroserviceType("4", 5, 5, false);
+        MicroserviceType mst_1 = new MicroserviceType("1", true);
+        MicroserviceType mst_2 = new MicroserviceType("2", false);
+        MicroserviceType mst_3 = new MicroserviceType("3", false);
+        MicroserviceType mst_4 = new MicroserviceType("4", false);
         mst_1.addConnection(mst_2, 10);
         mst_2.addConnection(mst_3, 25);
         mst_2.addConnection(mst_4, 100);

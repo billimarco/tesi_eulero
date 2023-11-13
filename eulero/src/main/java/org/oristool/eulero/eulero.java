@@ -74,7 +74,7 @@ public class eulero {
 
     public static Activity modelloDAG() {
         StochasticTime time = new UniformTime(BigDecimal.ZERO, BigDecimal.ONE);
-
+        
         Activity A = new Simple("A", new UniformTime(0, 1.0));
         Activity B = new Simple("B", new UniformTime(0, 1.0));
         Activity C = new Simple("C", new UniformTime(0, 1.0));

@@ -6,14 +6,13 @@ import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.Location;
 
 public class Microservice{
-    private float actual_time_distr;
+    private double[] actual_time_distr;
     private int arrival_rate_req;
     private MicroserviceType ms_type;
     private ArrayList<Microservice> connected_ms_list;
     private Location location;
 
-    public Microservice(float actual_time_distr,int arrival_rate_req,MicroserviceType ms_type,Location location){
-        this.actual_time_distr=actual_time_distr;
+    public Microservice(int arrival_rate_req,MicroserviceType ms_type,Location location){
         this.arrival_rate_req=arrival_rate_req;
         this.ms_type=ms_type;
         this.connected_ms_list = new ArrayList<>();
@@ -21,11 +20,11 @@ public class Microservice{
         location.addMicroservice(this);
     }
 
-    public float getActual_time_distr() {
+    public double[] getActual_time_distr() {
 		return this.actual_time_distr;
 	}
 
-	public void setActual_time_distr(float actual_time_distr) {
+	public void setActual_time_distr(double[] actual_time_distr) {
 		this.actual_time_distr = actual_time_distr;
 	}
 
@@ -39,10 +38,6 @@ public class Microservice{
 
 	public MicroserviceType getMs_type() {
 		return this.ms_type;
-	}
-
-	public ArrayList<Microservice> getConnected_ms_list() {
-		return this.connected_ms_list;
 	}
 
     public Location getLocation() {
