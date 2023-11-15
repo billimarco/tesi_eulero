@@ -1,21 +1,35 @@
 package msarchitecture.archsmodeling;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.oristool.eulero.evaluation.approximator.SplineBodyEXPTailApproximation;
+import org.oristool.eulero.evaluation.approximator.TruncatedExponentialApproximation;
+import org.oristool.eulero.evaluation.approximator.TruncatedExponentialMixtureApproximation;
+import org.oristool.eulero.evaluation.heuristics.RBFHeuristicsVisitor;
+import org.oristool.eulero.evaluation.heuristics.SDFHeuristicsVisitor;
+import org.oristool.eulero.modeling.Activity;
+import org.oristool.eulero.modeling.Composite;
+import org.oristool.eulero.modeling.Simple;
+import org.oristool.eulero.modeling.activitytypes.DAGType;
+import org.oristool.eulero.modeling.stochastictime.StochasticTime;
+import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 import org.oristool.eulero.ui.ActivityViewer;
 
 public class MicroserviceType{
     private String name_type;
-    private double[] qos_CDF;
-    private double[] completation_time_CDF;
+    private Activity qos;
+    private Simple completation_time;
     private boolean entry_point;
 
     private ArrayList<ConnectionMSType> connections;
 
-    public MicroserviceType(String name_type,boolean entry_point){
-        this.name_type=name_type;
-        this.entry_point=entry_point;
+    public MicroserviceType(String name_type,boolean entry_point,StochasticTime st){
+        this.name_type = name_type;
+        this.entry_point = entry_point;
+        this.completation_time = new Simple(name_type,st);
         this.connections = new ArrayList<>();
     }
 
@@ -27,20 +41,20 @@ public class MicroserviceType{
 		this.name_type = name_type;
 	}
 
-	public double[] getQos_CDF() {
-		return this.qos_CDF;
+	public Activity getQos() {
+		return this.qos;
 	}
 
-	public void setQos_CDF(double[] qos_CDF) {
-		this.qos_CDF = qos_CDF;
+	public void setQos(Activity qos) {
+		this.qos = qos;
 	}
 
-	public double[] getCompletation_time_CDF() {
-		return this.completation_time_CDF;
+	public Simple getCompletation_time() {
+		return this.completation_time;
 	}
 
-	public void setCompletation_time_CDF(double[] completation_time_CDF) {
-		this.completation_time_CDF = completation_time_CDF;
+	public void setCompletation_time(Simple completation_time) {
+		this.completation_time = completation_time;
 	}
 
 	public boolean is_entry_point() {
@@ -78,11 +92,11 @@ public class MicroserviceType{
         return false;
     }
 
-    public void plotQos_CDF(){
-        ActivityViewer.plot("QOS-"+name_type, List.of(""), getQos_CDF().length*0.01, 0.01, getQos_CDF());
+    public double[] calculateCompletation_Time_CDF(BigDecimal timeLimit, BigInteger CThreshold , BigInteger QThreshold){
+        return completation_time.analyze(timeLimit, completation_time.getFairTimeTick(), new SDFHeuristicsVisitor(CThreshold, QThreshold, new TruncatedExponentialApproximation()));
     }
 
-    public void plotCompletation_Time_CDF(){
-        ActivityViewer.plot("CompletationTime-"+name_type, List.of(""), getCompletation_time_CDF().length*0.01, 0.01, getCompletation_time_CDF());
+    public double[] calculateQos_CDF(BigDecimal timeLimit, BigInteger CThreshold , BigInteger QThreshold){
+        return qos.analyze(timeLimit, completation_time.getFairTimeTick(), new SDFHeuristicsVisitor(CThreshold, QThreshold, new TruncatedExponentialApproximation()));
     }
 }

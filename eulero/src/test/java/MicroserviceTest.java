@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 public class MicroserviceTest {
     MicroserviceType mst_1;
     MicroserviceType mst_2;
@@ -23,9 +24,9 @@ public class MicroserviceTest {
 
     @Before
     public void initMethod() {
-        mst_1 = new MicroserviceType("1", true);
-        mst_2 = new MicroserviceType("2", false);
-        mst_3 = new MicroserviceType("3", false);
+        mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5));
+        mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5));
+        mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5));
         res_cloud = new Resources(12, 16);
         cloud = new CloudLocation(res_cloud);
         ms_1 = new Microservice(0, mst_1, cloud);

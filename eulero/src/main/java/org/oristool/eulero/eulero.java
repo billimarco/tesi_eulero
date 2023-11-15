@@ -35,13 +35,13 @@ public class eulero {
         AnalysisHeuristicsStrategy strat = new AnalysisHeuristics1(BigInteger.valueOf(4), BigInteger.TEN, new TruncatedExponentialMixtureApproximation());
         AnalysisHeuristicsStrategy strat2 = new AnalysisHeuristics1(BigInteger.valueOf(1), BigInteger.ONE, new TruncatedExponentialMixtureApproximation());
 
-        double[] cane2 = strat2.analyze(test2, BigDecimal.valueOf(15), BigDecimal.valueOf(0.01));
-        double[] cdf = strat.analyze(modelloDAGVecchio(), BigDecimal.valueOf(15), BigDecimal.valueOf(0.01));
+        //double[] cane2 = strat2.analyze(test2, BigDecimal.valueOf(15), BigDecimal.valueOf(0.01));
+        //double[] cdf = strat.analyze(modelloDAGVecchio(), BigDecimal.valueOf(15), BigDecimal.valueOf(0.01));
         int i = 0;
 
-        /*double[] cdf = test1.analyze(test1.max().add(BigDecimal.ONE), test1.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(4), BigInteger.TEN, new TruncatedExponentialMixtureApproximation()));
+        double[] cdf = test1.analyze(test1.max().add(BigDecimal.ONE), test1.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(4), BigInteger.TEN, new TruncatedExponentialMixtureApproximation()));
         double[] cane2 = modelloDAG().analyze(test1.max().add(BigDecimal.ONE), test1.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.ONE, new TruncatedExponentialMixtureApproximation()));
-        double[] cane3 = tree().analyze(test1.max().add(BigDecimal.ONE), test1.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.ONE, new TruncatedExponentialMixtureApproximation()));*/
+        double[] cane3 = tree().analyze(test1.max().add(BigDecimal.ONE), test1.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.ONE, new TruncatedExponentialMixtureApproximation()));
         ActivityViewer.CompareResults("", List.of("Senza Repl", "Con Repl", "albero diretto"), List.of(
                 new EvaluationResult("Senza Repl", cdf, 0, cdf.length, 0.01, 0),
                 new EvaluationResult("Con Repl", cane2, 0, cane2.length, 0.01, 0)
