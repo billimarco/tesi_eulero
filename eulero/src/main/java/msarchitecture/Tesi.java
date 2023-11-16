@@ -31,9 +31,9 @@ public class Tesi {
         Resources res_edge = new Resources(4, 8);
         CloudLocation cloud = new CloudLocation(res_cloud);
         EdgeLocation edge = new EdgeLocation(res_edge);
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0, 1.0,2));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(0, 1.0,2));
-        MicroserviceType mst_3 = new MicroserviceType("3", false, new TruncatedExponentialTime(0, 1.0,2));
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0, 3.0,3));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1, 2.0,4));
+        MicroserviceType mst_3 = new MicroserviceType("3", false, new TruncatedExponentialTime(2, 5.0,5));
         MicroserviceType mst_4 = new MicroserviceType("4", false, new TruncatedExponentialTime(0, 1.0,2));
         MicroserviceType mst_5 = new MicroserviceType("5", false, new TruncatedExponentialTime(0, 1.0,2));
         mst_1.addConnection(mst_2, 10);
@@ -47,8 +47,8 @@ public class Tesi {
         });
         Controller.calculateQOS_DG(mst_1);
         System.out.println("ServiceMesh Creata");
-        double[] mst1Qos = mst_1.calculateQos_CDF(BigDecimal.valueOf(10),BigInteger.valueOf(10),BigInteger.valueOf(10));
-        double[] mst1CT = mst_1.calculateCompletation_Time_CDF(BigDecimal.valueOf(10),BigInteger.valueOf(1),BigInteger.valueOf(1));
+        double[] mst1Qos = mst_1.calculateQos_CDF(BigDecimal.valueOf(6),BigInteger.valueOf(1),BigInteger.valueOf(5));
+        double[] mst1CT = mst_1.calculateCompletation_Time_CDF(BigDecimal.valueOf(6),BigInteger.valueOf(1),BigInteger.valueOf(1));
         ActivityViewer.CompareResults("", List.of("mst1Qos", "mst1CT"), List.of(
                 new EvaluationResult("mst1Qos", mst1Qos, 0, mst1Qos.length, 0.01, 0),
                 new EvaluationResult("mst1CT", mst1CT, 0, mst1CT.length, 0.01, 0)

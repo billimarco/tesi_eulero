@@ -82,15 +82,13 @@ public class Controller{
             mst_list_internal = takeMicroserviceTypeConnected2(mst_list_internal, mst_list.get(i));
             HashMap<String,Activity> act_map = new HashMap<>();
             for(int j=0;j<mst_list_internal.size();j++){
-                act_map.put(mst_list_internal.get(j).getName_type(),mst_list_internal.get(j).getCompletation_time());
+                act_map.put(mst_list_internal.get(j).getName_type(),mst_list_internal.get(j).getCompletation_time().clone());
             }
             for(int j=0;j<mst_list_internal.size();j++){
-                if(mst_list_internal.get(j).equals(mst_list.get(i))){
-                    for(int k=0;k<mst_list_internal.get(j).getConnections().size();k++){
-                        String from_mst=mst_list_internal.get(j).getConnections().get(k).getFrom_MSType().getName_type();
-                        String to_mst=mst_list_internal.get(j).getConnections().get(k).getTo_MSType().getName_type();
-                        act_map.get(to_mst).addPrecondition(act_map.get(from_mst));
-                    }
+                for(int k=0;k<mst_list_internal.get(j).getConnections().size();k++){
+                    String from_mst=mst_list_internal.get(j).getConnections().get(k).getFrom_MSType().getName_type();
+                    String to_mst=mst_list_internal.get(j).getConnections().get(k).getTo_MSType().getName_type();
+                    act_map.get(to_mst).addPrecondition(act_map.get(from_mst));
                 }
             }
             Composite dgt = ModelFactory.DAG(act_map.values().toArray(new Activity[act_map.size()]));
