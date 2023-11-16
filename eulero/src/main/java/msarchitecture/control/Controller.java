@@ -82,7 +82,7 @@ public class Controller{
             mst_list_internal = takeMicroserviceTypeConnected2(mst_list_internal, mst_list.get(i));
             HashMap<String,Activity> act_map = new HashMap<>();
             for(int j=0;j<mst_list_internal.size();j++){
-                act_map.put(mst_list_internal.get(j).getName_type(),mst_list_internal.get(j).getCompletation_time().clone());
+                act_map.put(mst_list_internal.get(j).getName_type(),mst_list_internal.get(j).getCompletion_time().clone());
             }
             for(int j=0;j<mst_list_internal.size();j++){
                 for(int k=0;k<mst_list_internal.get(j).getConnections().size();k++){

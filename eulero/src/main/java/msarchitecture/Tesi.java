@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.oristool.eulero.evaluation.approximator.TruncatedExponentialApproximation;
 import org.oristool.eulero.evaluation.approximator.TruncatedExponentialMixtureApproximation;
 import org.oristool.eulero.evaluation.heuristics.EvaluationResult;
 import org.oristool.eulero.evaluation.heuristics.SDFHeuristicsVisitor;
@@ -47,8 +48,9 @@ public class Tesi {
         });
         Controller.calculateQOS_DG(mst_1);
         System.out.println("ServiceMesh Creata");
-        double[] mst1Qos = mst_1.calculateQos_CDF(BigDecimal.valueOf(6),BigInteger.valueOf(1),BigInteger.valueOf(5));
-        double[] mst1CT = mst_1.calculateCompletation_Time_CDF(BigDecimal.valueOf(6),BigInteger.valueOf(1),BigInteger.valueOf(1));
+        BigDecimal timeLimit = BigDecimal.valueOf(6);
+        double[] mst1Qos = mst_1.getQos().analyze(timeLimit, mst_1.getQos().getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(5), BigInteger.valueOf(5), new TruncatedExponentialApproximation()));
+        double[] mst1CT = mst_1.getCompletion_time().analyze(timeLimit, mst_1.getCompletion_time().getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.valueOf(1), new TruncatedExponentialApproximation()));
         ActivityViewer.CompareResults("", List.of("mst1Qos", "mst1CT"), List.of(
                 new EvaluationResult("mst1Qos", mst1Qos, 0, mst1Qos.length, 0.01, 0),
                 new EvaluationResult("mst1CT", mst1CT, 0, mst1CT.length, 0.01, 0)

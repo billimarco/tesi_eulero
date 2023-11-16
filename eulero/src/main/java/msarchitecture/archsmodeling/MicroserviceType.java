@@ -21,7 +21,7 @@ import org.oristool.eulero.ui.ActivityViewer;
 public class MicroserviceType{
     private String name_type;
     private Activity qos;
-    private Simple completation_time;
+    private Simple completion_time;
     private boolean entry_point;
 
     private ArrayList<ConnectionMSType> connections;
@@ -29,7 +29,7 @@ public class MicroserviceType{
     public MicroserviceType(String name_type,boolean entry_point,StochasticTime st){
         this.name_type = name_type;
         this.entry_point = entry_point;
-        this.completation_time = new Simple(name_type,st);
+        this.completion_time = new Simple(name_type,st);
         this.connections = new ArrayList<>();
     }
 
@@ -49,12 +49,12 @@ public class MicroserviceType{
 		this.qos = qos;
 	}
 
-	public Simple getCompletation_time() {
-		return this.completation_time;
+	public Simple getCompletion_time() {
+		return this.completion_time;
 	}
 
-	public void setCompletation_time(Simple completation_time) {
-		this.completation_time = completation_time;
+	public void setCompletion_time(Simple completation_time) {
+		this.completion_time = completation_time;
 	}
 
 	public boolean is_entry_point() {
@@ -90,13 +90,5 @@ public class MicroserviceType{
                 return true;
         }
         return false;
-    }
-
-    public double[] calculateCompletation_Time_CDF(BigDecimal timeLimit, BigInteger CThreshold , BigInteger QThreshold){
-        return completation_time.analyze(timeLimit, completation_time.getFairTimeTick(), new SDFHeuristicsVisitor(CThreshold, QThreshold, new TruncatedExponentialApproximation()));
-    }
-
-    public double[] calculateQos_CDF(BigDecimal timeLimit, BigInteger CThreshold , BigInteger QThreshold){
-        return qos.analyze(timeLimit, completation_time.getFairTimeTick(), new SDFHeuristicsVisitor(CThreshold, QThreshold, new TruncatedExponentialApproximation()));
     }
 }
