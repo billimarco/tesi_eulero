@@ -13,6 +13,7 @@ import org.oristool.eulero.evaluation.approximator.TruncatedExponentialMixtureAp
 import org.oristool.eulero.evaluation.heuristics.EvaluationResult;
 import org.oristool.eulero.evaluation.heuristics.SDFHeuristicsVisitor;
 import org.oristool.eulero.modeling.Activity;
+import org.oristool.eulero.modeling.Composite;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 import org.oristool.eulero.modeling.stochastictime.UniformTime;
 import org.oristool.eulero.ui.ActivityViewer;
@@ -37,20 +38,20 @@ public class Tesi {
         MicroserviceType mst_3 = new MicroserviceType("3", false, new TruncatedExponentialTime(2, 5.0,5));
         MicroserviceType mst_4 = new MicroserviceType("4", false, new TruncatedExponentialTime(0, 1.0,2));
         MicroserviceType mst_5 = new MicroserviceType("5", false, new TruncatedExponentialTime(0, 1.0,2));
-        mst_1.addConnection(mst_2, 10);
-        mst_1.addConnection(mst_3, 25);
-        mst_1.addConnection(mst_4, 100);
-        mst_3.addConnection(mst_5, 100);
-        mst_4.addConnection(mst_5, 100);
+        mst_1.addConnection(mst_2, 0.1);
+        mst_1.addConnection(mst_3, 0.3);
+        mst_1.addConnection(mst_4, 0.5);
+        mst_3.addConnection(mst_5, 0.2);
+        mst_4.addConnection(mst_5, 0.7);
         HashMap<String,Microservice> ms = Controller.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
         ms.forEach((key, value) -> {
             System.out.println(value.toString());
         });
-        Controller.calculateQOS_DG(mst_1);
         System.out.println("ServiceMesh Creata");
         BigDecimal timeLimit = BigDecimal.valueOf(6);
-        double[] mst1Qos = mst_1.getQos().analyze(timeLimit, mst_1.getQos().getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(5), BigInteger.valueOf(5), new TruncatedExponentialApproximation()));
-        double[] mst1CT = mst_1.getCompletion_time().analyze(timeLimit, mst_1.getCompletion_time().getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.valueOf(1), new TruncatedExponentialApproximation()));
+        Activity new_comp= mst_3.calculateQoSActivity_MT();
+        double[] mst1Qos = new_comp.analyze(timeLimit, new_comp.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(5), BigInteger.valueOf(5), new TruncatedExponentialApproximation()));
+        double[] mst1CT = mst_3.getCompletion_time().analyze(timeLimit, mst_3.getCompletion_time().getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(1), BigInteger.valueOf(1), new TruncatedExponentialApproximation()));
         ActivityViewer.CompareResults("", List.of("mst1Qos", "mst1CT"), List.of(
                 new EvaluationResult("mst1Qos", mst1Qos, 0, mst1Qos.length, 0.01, 0),
                 new EvaluationResult("mst1CT", mst1CT, 0, mst1CT.length, 0.01, 0)

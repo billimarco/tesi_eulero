@@ -3,9 +3,9 @@ package msarchitecture.archsmodeling;
 public class ConnectionMSType{
     private MicroserviceType from_MSType;
     private MicroserviceType to_MSType;
-    private float probability;
+    private double probability;
 
-    public ConnectionMSType(MicroserviceType from_MSType,MicroserviceType to_MSType,float probability){
+    public ConnectionMSType(MicroserviceType from_MSType,MicroserviceType to_MSType,double probability){
         this.from_MSType=from_MSType;
         this.to_MSType=to_MSType;
         this.probability=probability;
@@ -27,7 +27,7 @@ public class ConnectionMSType{
 		this.to_MSType = to_MSType;
 	}
 
-	public float getProbability() {
+	public double getProbability() {
 		return this.probability;
 	}
 
