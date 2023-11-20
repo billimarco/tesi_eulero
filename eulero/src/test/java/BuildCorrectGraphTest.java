@@ -4,7 +4,7 @@ import msarchitecture.archsmodeling.MicroserviceType;
 import msarchitecture.control.Controller;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;

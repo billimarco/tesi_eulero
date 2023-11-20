@@ -9,7 +9,7 @@ import org.oristool.eulero.modeling.Simple;
 import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
 import org.oristool.eulero.modeling.stochastictime.StochasticTime;
 
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 public class MicroserviceType{
     private String name_type;

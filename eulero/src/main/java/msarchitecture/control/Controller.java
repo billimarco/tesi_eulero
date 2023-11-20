@@ -7,7 +7,7 @@ import msarchitecture.archsmodeling.Microservice;
 import msarchitecture.archsmodeling.MicroserviceType;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 public class Controller{
     public static HashMap<String,Microservice> createServiceMesh(MicroserviceType type,ArrayList<MicroserviceType> microserviceType_list_edge,CloudLocation cloud,EdgeLocation edge){

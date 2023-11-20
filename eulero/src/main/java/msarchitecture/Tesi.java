@@ -19,7 +19,7 @@ import msarchitecture.archsmodeling.MicroserviceType;
 import msarchitecture.control.Controller;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 public class Tesi {
     public static void main(String[] args) throws Exception {

@@ -6,7 +6,7 @@ import org.oristool.eulero.modeling.stochastictime.StochasticTime;
 
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.Location;
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 public class Microservice{
     private StochasticTime actual_time_distr;//equivalente qos

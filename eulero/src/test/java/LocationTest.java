@@ -3,7 +3,7 @@ import msarchitecture.archsmodeling.Microservice;
 import msarchitecture.archsmodeling.MicroserviceType;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.locationfeature.Resources;
+import msarchitecture.resourcesfeature.Resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import msarchitecture.archsmodeling.Microservice;
+import msarchitecture.resourcesfeature.Resources;
 
 public class CloudLocation extends Location{
     public CloudLocation(Resources res){

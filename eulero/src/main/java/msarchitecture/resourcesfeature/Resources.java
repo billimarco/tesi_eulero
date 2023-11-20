@@ -1,4 +1,4 @@
-package msarchitecture.locationfeature;
+package msarchitecture.resourcesfeature;
 
 public class Resources{
     private int cpu;
