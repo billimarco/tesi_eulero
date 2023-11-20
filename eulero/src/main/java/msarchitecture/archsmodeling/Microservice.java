@@ -2,17 +2,20 @@ package msarchitecture.archsmodeling;
 
 import java.util.ArrayList;
 
+import org.oristool.eulero.modeling.stochastictime.StochasticTime;
+
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.Location;
+import msarchitecture.locationfeature.Resources;
 
 public class Microservice{
-    private double[] actual_time_distr;
+    private StochasticTime actual_time_distr;//equivalente qos
     private int arrival_rate_req;
     private MicroserviceType ms_type;
     private ArrayList<Microservice> connected_ms_list;
     private Location location;
 
-    public Microservice(int arrival_rate_req,MicroserviceType ms_type,Location location){
+    public Microservice(int arrival_rate_req,MicroserviceType ms_type,Location location,Resources res){
         this.arrival_rate_req=arrival_rate_req;
         this.ms_type=ms_type;
         this.connected_ms_list = new ArrayList<>();
@@ -20,11 +23,11 @@ public class Microservice{
         location.addMicroservice(this);
     }
 
-    public double[] getActual_time_distr() {
+    public StochasticTime getActual_time_distr() {
 		return this.actual_time_distr;
 	}
 
-	public void setActual_time_distr(double[] actual_time_distr) {
+	public void setActual_time_distr(StochasticTime actual_time_distr) {
 		this.actual_time_distr = actual_time_distr;
 	}
 

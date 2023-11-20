@@ -31,18 +31,18 @@ public class LocationTest {
 
     @Before
     public void initMethod() {
-        mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5));
-        mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5));
-        mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5));
+        mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
+        mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
+        mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
         res_cloud = new Resources(12, 16);
         res_edge = new Resources(12, 16);
         cloud = new CloudLocation(res_cloud);
         edge = new EdgeLocation(res_edge);
-        ms_1_cloud = new Microservice(0, mst_1, cloud);
-        ms_2_cloud = new Microservice(0, mst_2, cloud);
-        ms_3_cloud = new Microservice(0, mst_3, cloud);
-        ms_1_edge = new Microservice(0, mst_1, edge);
-        ms_2_edge = new Microservice(0, mst_2, edge);
+        ms_1_cloud = new Microservice(0, mst_1, cloud,new Resources(0,0));
+        ms_2_cloud = new Microservice(0, mst_2, cloud,new Resources(0,0));
+        ms_3_cloud = new Microservice(0, mst_3, cloud,new Resources(0,0));
+        ms_1_edge = new Microservice(0, mst_1, edge,new Resources(0,0));
+        ms_2_edge = new Microservice(0, mst_2, edge,new Resources(0,0));
     }
     
     @Test

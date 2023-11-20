@@ -1,38 +1,29 @@
 package msarchitecture.archsmodeling;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-import org.oristool.eulero.evaluation.approximator.SplineBodyEXPTailApproximation;
-import org.oristool.eulero.evaluation.approximator.TruncatedExponentialApproximation;
-import org.oristool.eulero.evaluation.approximator.TruncatedExponentialMixtureApproximation;
-import org.oristool.eulero.evaluation.heuristics.RBFHeuristicsVisitor;
-import org.oristool.eulero.evaluation.heuristics.SDFHeuristicsVisitor;
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.Composite;
 import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
-import org.oristool.eulero.modeling.activitytypes.DAGType;
+import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
 import org.oristool.eulero.modeling.stochastictime.StochasticTime;
-import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
-import org.oristool.eulero.ui.ActivityViewer;
+
+import msarchitecture.locationfeature.Resources;
 
 public class MicroserviceType{
     private String name_type;
-    private Activity qos;
-    private Simple completion_time;
+    private StochasticTime qos;
     private boolean entry_point;
+    private Resources qos_res;//risorse che servono per avere una certa qos
 
     private ArrayList<ConnectionMSType> connections;
 
-    public MicroserviceType(String name_type,boolean entry_point,StochasticTime st){
+    public MicroserviceType(String name_type,boolean entry_point,StochasticTime qos,Resources qos_res){
         this.name_type = name_type;
+        this.qos = qos;
         this.entry_point = entry_point;
-        this.completion_time = new Simple(name_type,st);
+        this.qos_res = qos_res;
         this.connections = new ArrayList<>();
     }
 
@@ -44,20 +35,12 @@ public class MicroserviceType{
 		this.name_type = name_type;
 	}
 
-	public Activity getQos() {
+	public StochasticTime getQos() {
 		return this.qos;
 	}
 
-	public void setQos(Activity qos) {
+	public void setQos(StochasticTime qos) {
 		this.qos = qos;
-	}
-
-	public Simple getCompletion_time() {
-		return this.completion_time;
-	}
-
-	public void setCompletion_time(Simple completation_time) {
-		this.completion_time = completation_time;
 	}
 
 	public boolean is_entry_point() {
@@ -67,6 +50,14 @@ public class MicroserviceType{
 	public void set_entry_point(boolean entry_point) {
 		this.entry_point = entry_point;
 	}
+
+    public Resources getQos_res() {
+        return qos_res;
+    }
+
+    public void setQos_res(Resources qos_res) {
+        this.qos_res = qos_res;
+    }
 
     public void addConnection(MicroserviceType to_mst,double probability){
         ConnectionMSType new_conn = new ConnectionMSType(this,to_mst,probability);
@@ -95,17 +86,28 @@ public class MicroserviceType{
         return false;
     }
 
-    public Activity calculateQoSActivity_MT(){
+    public Activity getSimpleActivity(){
+        return new Simple(this.name_type,this.qos);
+    }
+
+    public Activity getCompositeActivity(){
         if(connections.size()>0){
             ArrayList<Activity> act_list = new ArrayList<>();
             ArrayList<Double> act_prob_list = new ArrayList<>();
             for(int i=0;i<connections.size();i++){
-                act_list.add(connections.get(i).getTo_MSType().calculateQoSActivity_MT());
+                act_list.add(connections.get(i).getTo_MSType().getCompositeActivity());
                 act_prob_list.add(connections.get(i).getProbability());
             }
-            Activity or_act=ModelFactory.OR(act_prob_list, act_list.toArray(new Activity[connections.size()]));
-            return ModelFactory.sequence(this.completion_time,or_act);
+            Activity seq_comp_act = null;
+            if(connections.size()>1){
+                seq_comp_act = ModelFactory.OR(act_prob_list, act_list.toArray(new Activity[connections.size()]));
+            } else if(connections.size()==1){
+                act_prob_list.add(1-act_prob_list.get(0));
+                act_list.add(new Simple(connections.get(0).getTo_MSType().getName_type()+"_missed", new DeterministicTime(BigDecimal.valueOf(0))));
+                seq_comp_act = ModelFactory.XOR(act_prob_list,act_list.toArray(new Activity[connections.size()]));
+            }
+            return ModelFactory.sequence(getSimpleActivity(),seq_comp_act);
         }
-        return this.completion_time;
+        return getSimpleActivity();
     }
 }
