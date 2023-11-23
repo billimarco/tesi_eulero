@@ -1,6 +1,5 @@
 package msarchitecture.locationfeature;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import msarchitecture.archsmodeling.Microservice;
@@ -9,8 +8,8 @@ import msarchitecture.resourcesfeature.Resources;
 public class EdgeLocation extends Location{
     public EdgeLocation(Resources res){
         this.res=res;
-        ms_list = new ArrayList<>();
-		res_distribution = new HashMap<>();
+        this.ms_map = new HashMap<>();
+		this.res_distribution_map = new HashMap<>();
     }
 
     public Resources getRes() {
@@ -21,21 +20,25 @@ public class EdgeLocation extends Location{
 		this.res = res;
 	}
 
-	public ArrayList<Microservice> getMs_list() {
-		return this.ms_list;
+	public HashMap<String,Microservice> getMs_map() {
+		return this.ms_map;
 	}
 
 	public HashMap<String,Resources> getRes_distribution() {
-		return this.res_distribution;
+		return this.res_distribution_map;
 	}
     
     @Override
-    public void addMicroservice(Microservice ms){
-        ms_list.add(ms);
+    public void addMicroservice(Microservice ms,Resources res_ms){
+        ms_map.put(ms.getName_ms(),ms);
+		res_distribution_map.put(ms.getName_ms(), res_ms);
     }
 
     @Override
-    public void removeMicroservice(Microservice ms){
-        ms_list.remove(ms);
+    public void removeMicroservice(String name_ms){
+		if(ms_map.containsKey(name_ms))
+        	ms_map.remove(name_ms);
+		if(res_distribution_map.containsKey(name_ms))
+			res_distribution_map.remove(name_ms);
     }
 }

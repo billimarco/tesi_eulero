@@ -6,6 +6,7 @@ import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.resourcesfeature.Resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -47,17 +48,19 @@ public class LocationTest {
     
     @Test
     public void addMicroserviceTest(){
-        assertTrue(cloud.getMs_list().size()==3);
-        assertTrue(edge.getMs_list().size()==2);
+        assertTrue(cloud.getMs_map().size()==3);
+        assertTrue(edge.getMs_map().size()==2);
     }
 
     @Test
     public void removeMicroserviceTest(){
-        cloud.removeMicroservice(ms_1_cloud);
-        cloud.removeMicroservice(ms_2_cloud);
-        edge.removeMicroservice(ms_1_edge);
-        assertEquals(cloud.getMs_list().get(0),ms_3_cloud);
-        assertEquals(edge.getMs_list().get(0),ms_2_edge);
+        cloud.removeMicroservice("1_cloud");
+        cloud.removeMicroservice("2_cloud");
+        edge.removeMicroservice("1_edge");
+        assertTrue(cloud.getMs_map().keySet().contains("3_cloud"));
+        assertTrue(edge.getMs_map().keySet().contains("2_edge"));
+        assertFalse(cloud.getMs_map().keySet().contains("1_cloud"));
+        assertFalse(cloud.getMs_map().keySet().contains("1_edge"));
     }
 
     @After

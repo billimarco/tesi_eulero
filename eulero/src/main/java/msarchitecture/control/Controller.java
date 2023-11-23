@@ -40,17 +40,17 @@ public class Controller{
         }
 
         //link microservices on edge with each other or with microservices in the cloud
-        for(Microservice ms_edge_from : edge.getMs_list()){
+        for(Microservice ms_edge_from : edge.getMs_map().values()){
             for(ConnectionMSType conn : ms_edge_from.getMs_type().getConnections()){
                 boolean check_conn_to_edge = false;
-                for(Microservice ms_edge_to : edge.getMs_list()){
+                for(Microservice ms_edge_to : edge.getMs_map().values()){
                     if(conn.getTo_MSType().equals(ms_edge_to.getMs_type())){
                         ms_edge_from.addConnection(ms_edge_to);
                         check_conn_to_edge = true;
                     }
                 }
                 if(!check_conn_to_edge){
-                    for(Microservice ms_cloud_to : cloud.getMs_list()){
+                    for(Microservice ms_cloud_to : cloud.getMs_map().values()){
                         if(conn.getTo_MSType().equals(ms_cloud_to.getMs_type())){
                             ms_edge_from.addConnection(ms_cloud_to);
                         }

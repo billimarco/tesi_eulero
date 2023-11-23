@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.oristool.eulero.modeling.stochastictime.StochasticTime;
 
 import msarchitecture.locationfeature.CloudLocation;
+import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.locationfeature.Location;
 import msarchitecture.resourcesfeature.Resources;
 
 public class Microservice{
+    private String name_ms;
     private StochasticTime actual_time_distr;//equivalente qos
     private int arrival_rate_req;
     private MicroserviceType ms_type;
@@ -20,7 +22,16 @@ public class Microservice{
         this.ms_type=ms_type;
         this.connected_ms_list = new ArrayList<>();
         this.location=location;
-        location.addMicroservice(this);
+        if(this.location instanceof CloudLocation){
+            this.name_ms=ms_type.getName_type()+"_cloud";
+        }else if(this.location instanceof EdgeLocation){
+            this.name_ms=ms_type.getName_type()+"_edge";
+        }
+        location.addMicroservice(this,res);
+    }
+
+    public String getName_ms() {
+        return name_ms;
     }
 
     public StochasticTime getActual_time_distr() {
@@ -69,18 +80,10 @@ public class Microservice{
 	}
 
     public String toString(){
-        String line = ms_type.getName_type()+"_";
-        if(location instanceof CloudLocation)
-            line+="cloud";
-        else
-            line+="edge";
+        String line = getName_ms();
         line+=" connected to : | ";
         for(int i=0;i<connected_ms_list.size();i++){
-            line+=connected_ms_list.get(i).getMs_type().getName_type()+"_";
-            if(connected_ms_list.get(i).location instanceof CloudLocation)
-                line+="cloud";
-            else
-                line+="edge";
+            line+=connected_ms_list.get(i).getName_ms();
             line+=" | ";
         }
         return line;
