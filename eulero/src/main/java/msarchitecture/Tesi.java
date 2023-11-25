@@ -27,30 +27,42 @@ public class Tesi {
         Resources res_edge = new Resources(6000, 6000);
         CloudLocation cloud = new CloudLocation(res_cloud);
         EdgeLocation edge = new EdgeLocation(res_edge);
+
         MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0, 3.0,3),new Resources(0, 0));
         MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1, 2.0,4),new Resources(0, 0));
         MicroserviceType mst_3 = new MicroserviceType("3", false, new TruncatedExponentialTime(2, 5.0,5),new Resources(0, 0));
         MicroserviceType mst_4 = new MicroserviceType("4", false, new TruncatedExponentialTime(2, 5.0,5),new Resources(0, 0));
         MicroserviceType mst_5 = new MicroserviceType("5", false, new TruncatedExponentialTime(1, 3.0,2),new Resources(0, 0));
+        
         mst_1.addConnection(mst_2, 0.1);
         mst_1.addConnection(mst_3, 0.3);
         mst_1.addConnection(mst_4, 0.5);
         mst_3.addConnection(mst_5, 0.1);
         mst_4.addConnection(mst_5, 0.9);
+
         HashMap<String,Microservice> ms = Controller.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
-        ms.forEach((key, value) -> {
-            System.out.println(value.toString());
-        });
-        System.out.println("ServiceMesh Creata");
-        BigDecimal timeLimit = BigDecimal.valueOf(6);
+        Controller.printServiceMeshConnections(ms);
+
+        int timeLimit = 12;
+        double timeStep = 0.01;
+        int CThreshold = 15;
+        int QThreshold = 15;
+        
         Activity mstCom4= mst_4.getCompositeActivity();
         Activity mstCom3 = mst_3.getCompositeActivity();
-        double[] mst4Qos = mstCom4.analyze(timeLimit, mstCom4.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(5), BigInteger.valueOf(5), new TruncatedExponentialApproximation()));
-        double[] mst3Qos = mstCom3.analyze(timeLimit, mstCom3.getFairTimeTick(), new SDFHeuristicsVisitor(BigInteger.valueOf(3), BigInteger.valueOf(3), new TruncatedExponentialApproximation()));
+        Activity msCom4edge = ms.get("4_edge").getCompositeActivity();
+        Activity msCom3cloud = ms.get("3_cloud").getCompositeActivity();
+
+        double[] mst4Qos = mstCom4.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] mst3Qos = mstCom3.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] ms4edgearr = msCom4edge.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] ms3cloudarr = msCom3cloud.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        
+        Controller.printPairwiseComparisonDominanceResults(ms,timeLimit,timeStep,CThreshold,QThreshold,0.02);
         ActivityViewer.CompareResults("", List.of("mst4Qos", "mst3Qos"), List.of(
-                new EvaluationResult("mst1Qos", mst4Qos, 0, mst4Qos.length, 0.01, 0),
-                new EvaluationResult("mst3Qos", mst3Qos, 0, mst3Qos.length, 0.01, 0)
+                new EvaluationResult("mst4Qos", mst4Qos, 0, mst4Qos.length, 0.01, 0),
+                new EvaluationResult("mst3Qos", ms4edgearr, 0, ms4edgearr.length, 0.01, 0)
         ));
-        System.out.println("CDF Creata");
+        Controller.printPairwiseComparisonDominanceResults(ms,timeLimit,timeStep,CThreshold,QThreshold,0.02);
     }
 }

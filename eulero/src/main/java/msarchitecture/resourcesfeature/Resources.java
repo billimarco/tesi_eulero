@@ -3,6 +3,7 @@ package msarchitecture.resourcesfeature;
 public class Resources{
     private int cpu;
     private int ram;
+	private final int minimalYield = 1;
 
     public Resources(int cpu,int ram){
         this.cpu=cpu;
@@ -23,5 +24,9 @@ public class Resources{
 
 	public void setRam(int ram) {
 		this.ram = ram;
+	}
+
+	public double getCalculatePower(){
+		return cpu*0.8 + ram*0.2 + minimalYield;
 	}
 }

@@ -7,19 +7,19 @@ import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
-import org.oristool.eulero.modeling.stochastictime.StochasticTime;
+import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 
 import msarchitecture.resourcesfeature.Resources;
 
 public class MicroserviceType{
     private String name_type;
-    private StochasticTime qos;
+    private TruncatedExponentialTime qos;
     private boolean entry_point;
-    private Resources qos_res;//risorse che servono per avere una certa qos
+    private Resources qos_res;
 
     private ArrayList<ConnectionMSType> connections;
 
-    public MicroserviceType(String name_type,boolean entry_point,StochasticTime qos,Resources qos_res){
+    public MicroserviceType(String name_type,boolean entry_point,TruncatedExponentialTime qos,Resources qos_res){
         this.name_type = name_type;
         this.qos = qos;
         this.entry_point = entry_point;
@@ -33,14 +33,16 @@ public class MicroserviceType{
 
 	public void setName_type(String name_type) {
 		this.name_type = name_type;
+        //TODO call ms linked for changing
 	}
 
-	public StochasticTime getQos() {
+	public TruncatedExponentialTime getQos() {
 		return this.qos;
 	}
 
-	public void setQos(StochasticTime qos) {
+	public void setQos(TruncatedExponentialTime qos) {
 		this.qos = qos;
+        //TODO call ms linked for changing
 	}
 
 	public boolean is_entry_point() {
@@ -49,6 +51,7 @@ public class MicroserviceType{
 
 	public void set_entry_point(boolean entry_point) {
 		this.entry_point = entry_point;
+        //TODO call ms linked for changing
 	}
 
     public Resources getQos_res() {
@@ -57,6 +60,7 @@ public class MicroserviceType{
 
     public void setQos_res(Resources qos_res) {
         this.qos_res = qos_res;
+        //TODO call ms linked for changing
     }
 
     public void addConnection(MicroserviceType to_mst,double probability){
@@ -69,6 +73,7 @@ public class MicroserviceType{
         for(ConnectionMSType conn: connections) {
             if(conn.getTo_MSType().equals(to_mst)){
                 connections.remove(conn);
+                //TODO call ms linked for changing
                 break;
             }
         }

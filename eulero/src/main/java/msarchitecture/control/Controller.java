@@ -24,7 +24,7 @@ public class Controller{
                 if(microservice_map.containsKey(add_to_cloud_mst.getName_type()+"_cloud")){
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(microservice_map.get(add_to_cloud_mst.getName_type()+"_cloud"));
                 }else{
-                    Microservice new_ms_to_cloud = new Microservice(20,add_to_cloud_mst,cloud,new Resources(0,0));
+                    Microservice new_ms_to_cloud = new Microservice(20,add_to_cloud_mst,cloud,add_to_cloud_mst.getQos_res());
                     microservice_map.put(add_to_cloud_mst.getName_type()+"_cloud",new_ms_to_cloud);
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(new_ms_to_cloud);
                 }
@@ -60,6 +60,32 @@ public class Controller{
         }
 
         return microservice_map;
+    }
+
+    public static void printServiceMeshConnections(HashMap<String,Microservice> ms){
+        System.out.println("--------------------------------------------");
+        System.out.println("Service Mesh Connections");
+        System.out.println("--------------------------------------------");
+        ms.forEach((key, value) -> {
+            System.out.println(value.toString());
+        });
+        System.out.println("--------------------------------------------");
+    }
+
+    public static void printPairwiseComparisonDominanceResults(HashMap<String,Microservice> ms,int timeLimit,double timeStep,int CThreshold,int QThreshold,double error){
+        double acceptance = 0.5-error;
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Pairwise-Comparison Dominance Analysis");
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Error: "+error+"\tAcceptance Value: "+acceptance);
+        System.out.println("------------------------------------------------------------");
+        System.out.printf("%-15s   %-1s   %-15s   %-1s   %-15s%n", "node", "|", "pcd-value", "|", "qos satisfied");
+        System.out.println("------------------------------------------------------------");
+        ms.forEach((key, value) -> {
+            double pcdvalue = value.getPairwiseComparisonDominanceValue(timeLimit,timeStep,CThreshold,QThreshold);
+            System.out.printf("%-15s   %-1s   %-15.3f   %-1s   %-15s%n", key, "|", pcdvalue, "|", pcdvalue>acceptance);
+        });
+        System.out.println("------------------------------------------------------------");
     }
 
     private static ArrayList<MicroserviceType> takeMicroserviceTypeConnected(ArrayList<MicroserviceType> list,MicroserviceType mst){

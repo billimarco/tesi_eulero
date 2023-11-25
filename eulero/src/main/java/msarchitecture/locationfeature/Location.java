@@ -6,11 +6,10 @@ import msarchitecture.archsmodeling.Microservice;
 import msarchitecture.resourcesfeature.Resources;
 
 public abstract class Location{
-    Resources res;
+    Resources loc_res;
     HashMap<String,Microservice> ms_map;
-    HashMap<String,Resources> res_distribution_map;
 
-    public abstract void addMicroservice(Microservice ms,Resources ms_res);
+    public abstract void addMicroservice(Microservice ms);
     public abstract void removeMicroservice(String name_ms);
 
 }
