@@ -16,7 +16,7 @@ import org.oristool.eulero.ui.ActivityViewer;
 
 import msarchitecture.archsmodeling.Microservice;
 import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.control.Controller;
+import msarchitecture.control.Orchestrator;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.resourcesfeature.Resources;
@@ -28,10 +28,10 @@ public class Tesi {
         CloudLocation cloud = new CloudLocation(res_cloud);
         EdgeLocation edge = new EdgeLocation(res_edge);
 
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0, 3.0,3),new Resources(0, 0));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1, 2.0,4),new Resources(0, 0));
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0, 3.0,3),new Resources(2, 0));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1, 2.0,4),new Resources(0, 2));
         MicroserviceType mst_3 = new MicroserviceType("3", false, new TruncatedExponentialTime(2, 5.0,5),new Resources(0, 0));
-        MicroserviceType mst_4 = new MicroserviceType("4", false, new TruncatedExponentialTime(2, 5.0,5),new Resources(0, 0));
+        MicroserviceType mst_4 = new MicroserviceType("4", false, new TruncatedExponentialTime(2, 5.0,5),new Resources(2, 0));
         MicroserviceType mst_5 = new MicroserviceType("5", false, new TruncatedExponentialTime(1, 3.0,2),new Resources(0, 0));
         
         mst_1.addConnection(mst_2, 0.1);
@@ -40,29 +40,22 @@ public class Tesi {
         mst_3.addConnection(mst_5, 0.1);
         mst_4.addConnection(mst_5, 0.9);
 
-        HashMap<String,Microservice> ms = Controller.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
-        Controller.printServiceMeshConnections(ms);
-
-        int timeLimit = 12;
-        double timeStep = 0.01;
-        int CThreshold = 15;
-        int QThreshold = 15;
-        
+        HashMap<String,Microservice> ms = Orchestrator.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
+        Orchestrator.printServiceMeshConnections(ms);
+        Orchestrator.printPairwiseComparisonDominanceResults(ms,0.02);
+        /**
         Activity mstCom4= mst_4.getCompositeActivity();
         Activity mstCom3 = mst_3.getCompositeActivity();
         Activity msCom4edge = ms.get("4_edge").getCompositeActivity();
         Activity msCom3cloud = ms.get("3_cloud").getCompositeActivity();
-
-        double[] mst4Qos = mstCom4.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        double[] mst3Qos = mstCom3.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        double[] ms4edgearr = msCom4edge.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        double[] ms3cloudarr = msCom3cloud.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(0.01), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        
-        Controller.printPairwiseComparisonDominanceResults(ms,timeLimit,timeStep,CThreshold,QThreshold,0.02);
-        ActivityViewer.CompareResults("", List.of("mst4Qos", "mst3Qos"), List.of(
+        double[] mst4Qos = mstCom4.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
+        double[] mst3Qos = mstCom3.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
+        double[] ms4edgearr = msCom4edge.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
+        double[] ms3cloudarr = msCom3cloud.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
+        ActivityViewer.CompareResults("", List.of("mst4Qos", "ms4edgearr"), List.of(
                 new EvaluationResult("mst4Qos", mst4Qos, 0, mst4Qos.length, 0.01, 0),
-                new EvaluationResult("mst3Qos", ms4edgearr, 0, ms4edgearr.length, 0.01, 0)
+                new EvaluationResult("ms4edgearr", ms4edgearr, 0, ms4edgearr.length, 0.01, 0)
         ));
-        Controller.printPairwiseComparisonDominanceResults(ms,timeLimit,timeStep,CThreshold,QThreshold,0.02);
+        */
     }
 }
