@@ -22,7 +22,7 @@ import msarchitecture.resourcesfeature.Resources;
 
 public class Microservice{
     private String name_ms;
-    private TruncatedExponentialTime actual_time_distr;
+    private StochasticTime actual_time_distr;
     private int arrival_rate_req;
     private MicroserviceType ms_type;
     private ArrayList<Microservice> connected_ms_list;
@@ -132,10 +132,14 @@ public class Microservice{
     }
 
     private void variateDistribution(){
-        double EFT = this.ms_type.getQos().getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-        double LFT = this.ms_type.getQos().getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-        double rate = (this.ms_type.getQos().getRate().doubleValue() * this.ms_res.getCalculatePower()) / this.ms_type.getQos_res().getCalculatePower();
-        this.actual_time_distr = new TruncatedExponentialTime(EFT, LFT, rate);
+        String DistributionName = this.ms_type.getQos().getClass().getSimpleName();
+        switch(DistributionName){
+            case "TruncatedExponentialTime":
+                double EFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                double LFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                double rate = (((TruncatedExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * this.ms_res.getCalculatePower()) / this.ms_type.getQos_res().getCalculatePower();
+                this.actual_time_distr = new TruncatedExponentialTime(EFT, LFT, rate);
+        }
     }
 
     public double getPairwiseComparisonDominanceValue(){

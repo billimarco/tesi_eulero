@@ -39,7 +39,7 @@ public class Tesi {
         mst_1.addConnection(mst_4, 0.5);
         mst_3.addConnection(mst_5, 0.1);
         mst_4.addConnection(mst_5, 0.9);
-
+        
         HashMap<String,Microservice> ms = Orchestrator.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
         Orchestrator.printServiceMeshConnections(ms);
         Orchestrator.printPairwiseComparisonDominanceResults(ms,0.02);

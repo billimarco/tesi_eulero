@@ -7,19 +7,20 @@ import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
+import org.oristool.eulero.modeling.stochastictime.StochasticTime;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 
 import msarchitecture.resourcesfeature.Resources;
 
 public class MicroserviceType{
     private String name_type;
-    private TruncatedExponentialTime qos;
+    private StochasticTime qos;
     private boolean entry_point;
     private Resources qos_res;
 
     private ArrayList<ConnectionMSType> connections;
 
-    public MicroserviceType(String name_type,boolean entry_point,TruncatedExponentialTime qos,Resources qos_res){
+    public MicroserviceType(String name_type,boolean entry_point,StochasticTime qos,Resources qos_res){
         this.name_type = name_type;
         this.qos = qos;
         this.entry_point = entry_point;
@@ -36,7 +37,7 @@ public class MicroserviceType{
         //TODO call ms linked for changing
 	}
 
-	public TruncatedExponentialTime getQos() {
+	public StochasticTime getQos() {
 		return this.qos;
 	}
 
