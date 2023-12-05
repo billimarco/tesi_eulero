@@ -11,8 +11,11 @@ import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
+import org.oristool.eulero.modeling.stochastictime.ErlangTime;
 import org.oristool.eulero.modeling.stochastictime.StochasticTime;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
 
 import msarchitecture.control.Orchestrator;
 import msarchitecture.locationfeature.CloudLocation;
@@ -133,12 +136,30 @@ public class Microservice{
 
     private void variateDistribution(){
         String DistributionName = this.ms_type.getQos().getClass().getSimpleName();
+        double EFT,LFT,rate;
         switch(DistributionName){
             case "TruncatedExponentialTime":
-                double EFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-                double LFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-                double rate = (((TruncatedExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * this.ms_res.getCalculatePower()) / this.ms_type.getQos_res().getCalculatePower();
+                EFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                LFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                rate = ((TruncatedExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
                 this.actual_time_distr = new TruncatedExponentialTime(EFT, LFT, rate);
+                break;
+            case "ErlangTime":
+                rate = ((ErlangTime) this.ms_type.getQos()).getRate() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
+                this.actual_time_distr = new ErlangTime(((ErlangTime) this.ms_type.getQos()).getK(), rate);
+                break;
+            case "ExponentialTime":
+                rate = ((ExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
+                this.actual_time_distr = new ExponentialTime(BigDecimal.valueOf(rate));
+                break;
+            case "UniformTime":
+                EFT = ((UniformTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                LFT = ((UniformTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                this.actual_time_distr = new UniformTime(EFT, LFT);
+                break;
+            default:
+                this.actual_time_distr = null;
+                break;
         }
     }
 
