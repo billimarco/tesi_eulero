@@ -1,4 +1,4 @@
-package msarchitecture.control;
+package msarchitecture.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,44 +9,7 @@ import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.resourcesfeature.Resources;
 
-public class Orchestrator{
-    private static int timeLimit = 12;
-    private static double timeStep = 0.01;
-    private static int CThreshold = 15;
-    private static int QThreshold = 15;
-
-    public static int getTimeLimit() {
-        return timeLimit;
-    }
-
-    public static void setTimeLimit(int timeLimit) {
-        Orchestrator.timeLimit = timeLimit;
-    }
-
-    public static double getTimeStep() {
-        return timeStep;
-    }
-
-    public static void setTimeStep(double timeStep) {
-        Orchestrator.timeStep = timeStep;
-    }
-
-    public static int getCThreshold() {
-        return CThreshold;
-    }
-
-    public static void setCThreshold(int cThreshold) {
-        CThreshold = cThreshold;
-    }
-
-    public static int getQThreshold() {
-        return QThreshold;
-    }
-
-    public static void setQThreshold(int qThreshold) {
-        QThreshold = qThreshold;
-    }
-
+public class SMBuilder{
     public static HashMap<String,Microservice> createServiceMesh(MicroserviceType type,ArrayList<MicroserviceType> microserviceType_list_edge,CloudLocation cloud,EdgeLocation edge){
 
         //add microservices to cloud and link them
@@ -99,16 +62,6 @@ public class Orchestrator{
         return microservice_map;
     }
 
-    public static void printServiceMeshConnections(HashMap<String,Microservice> ms){
-        System.out.println("--------------------------------------------");
-        System.out.println("Service Mesh Connections");
-        System.out.println("--------------------------------------------");
-        ms.forEach((key, value) -> {
-            System.out.println(value.toString());
-        });
-        System.out.println("--------------------------------------------");
-    }
-
     private static ArrayList<MicroserviceType> takeMicroserviceTypeConnected(ArrayList<MicroserviceType> list,MicroserviceType mst){
         if(list.contains(mst)){
             list.remove(mst);
@@ -119,21 +72,5 @@ public class Orchestrator{
             takeMicroserviceTypeConnected(list,conn_list.get(i).getTo_MSType());
         }
         return list;
-    }
-
-    public static void printPairwiseComparisonDominanceResults(HashMap<String,Microservice> ms,double error){
-        double acceptance = 0.5-error;
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Pairwise-Comparison Dominance Analysis");
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Error: "+error+"\tAcceptance Value: "+acceptance);
-        System.out.println("------------------------------------------------------------");
-        System.out.printf("%-15s   %-1s   %-15s   %-1s   %-15s%n", "node", "|", "pcd-value", "|", "qos satisfied");
-        System.out.println("------------------------------------------------------------");
-        ms.forEach((key, value) -> {
-            double pcdvalue = value.getPairwiseComparisonDominanceValue();
-            System.out.printf("%-15s   %-1s   %-15.3f   %-1s   %-15s%n", key, "|", pcdvalue, "|", pcdvalue>acceptance);
-        });
-        System.out.println("------------------------------------------------------------");
     }
 }

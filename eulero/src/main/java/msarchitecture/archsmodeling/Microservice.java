@@ -17,11 +17,11 @@ import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 import org.oristool.eulero.modeling.stochastictime.UniformTime;
 import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
 
-import msarchitecture.control.Orchestrator;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.locationfeature.Location;
 import msarchitecture.resourcesfeature.Resources;
+import msarchitecture.utils.SMBuilder;
 
 public class Microservice{
     private String name_ms;
@@ -163,15 +163,15 @@ public class Microservice{
         }
     }
 
-    public double getPairwiseComparisonDominanceValue(){
+    public double getPairwiseComparisonDominanceValue(int timeLimit,double timeStep,int CThreshold,int QThreshold){
         Activity ms_comp = getCompositeActivity();
         Activity mst_comp = ms_type.getCompositeActivity();
-        double[] mst_comp_cdf = mst_comp.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
-        double[] ms_comp_cdf = ms_comp.analyze(BigDecimal.valueOf(Orchestrator.getTimeLimit()), BigDecimal.valueOf(Orchestrator.getTimeStep()), new SDFHeuristicsVisitor(BigInteger.valueOf(Orchestrator.getCThreshold()), BigInteger.valueOf(Orchestrator.getQThreshold()), new TruncatedExponentialApproximation()));
+        double[] mst_comp_cdf = mst_comp.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] ms_comp_cdf = ms_comp.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
         double[] ms_comp_pdf = new EvaluationResult("ms_comp_pdf", ms_comp_cdf, 0, ms_comp_cdf.length, 0.01, 0).pdf();
         double result = 0;
         for(int i=0;i<mst_comp_cdf.length;i++){
-            result += (1-mst_comp_cdf[i])*ms_comp_pdf[i]*Orchestrator.getTimeStep();
+            result += (1-mst_comp_cdf[i])*ms_comp_pdf[i]*timeStep;
         }
         return result;
     }

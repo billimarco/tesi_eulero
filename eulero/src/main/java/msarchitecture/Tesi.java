@@ -16,13 +16,15 @@ import org.oristool.eulero.ui.ActivityViewer;
 
 import msarchitecture.archsmodeling.Microservice;
 import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.control.Orchestrator;
 import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.resourcesfeature.Resources;
+import msarchitecture.ui.AnalysisViewer;
+import msarchitecture.utils.SMBuilder;
 
 public class Tesi {
     public static void main(String[] args) throws Exception {
+        AnalysisViewer an = new AnalysisViewer(12,0.01,15,15);
         Resources res_cloud = new Resources(6000, 6000);
         Resources res_edge = new Resources(6000, 6000);
         CloudLocation cloud = new CloudLocation(res_cloud);
@@ -40,9 +42,9 @@ public class Tesi {
         mst_3.addConnection(mst_5, 0.1);
         mst_4.addConnection(mst_5, 0.9);
         
-        HashMap<String,Microservice> ms = Orchestrator.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
-        Orchestrator.printServiceMeshConnections(ms);
-        Orchestrator.printPairwiseComparisonDominanceResults(ms,0.02);
+        HashMap<String,Microservice> ms = SMBuilder.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
+        an.printServiceMeshConnections(ms);
+        an.printPairwiseComparisonDominanceResults(ms,0.02);
         /**
         Activity mstCom4= mst_4.getCompositeActivity();
         Activity mstCom3 = mst_3.getCompositeActivity();
