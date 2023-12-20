@@ -24,7 +24,7 @@ public class SMBuilder{
                 if(microservice_map.containsKey(add_to_cloud_mst.getName_type()+"_cloud")){
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(microservice_map.get(add_to_cloud_mst.getName_type()+"_cloud"));
                 }else{
-                    Microservice new_ms_to_cloud = new Microservice(20,add_to_cloud_mst,cloud,add_to_cloud_mst.getQos_res());
+                    Microservice new_ms_to_cloud = new Microservice(20,add_to_cloud_mst,cloud,new Resources(0,0));
                     microservice_map.put(add_to_cloud_mst.getName_type()+"_cloud",new_ms_to_cloud);
                     microservice_map.get(next_mst.getName_type()+"_cloud").addConnection(new_ms_to_cloud);
                 }

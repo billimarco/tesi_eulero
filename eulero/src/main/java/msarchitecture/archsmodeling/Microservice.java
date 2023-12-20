@@ -21,7 +21,6 @@ import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.locationfeature.Location;
 import msarchitecture.resourcesfeature.Resources;
-import msarchitecture.utils.SMBuilder;
 
 public class Microservice{
     private String name_ms;
@@ -99,7 +98,7 @@ public class Microservice{
 
     public String toString(){
         String line = getName_ms();
-        line+="\t : | ";
+        line+=" : | ";
         for(int i=0;i<connected_ms_list.size();i++){
             line+=connected_ms_list.get(i).getName_ms();
             line+=" | ";
