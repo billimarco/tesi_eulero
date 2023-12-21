@@ -62,6 +62,13 @@ public class LocationTest {
         assertFalse(cloud.getMs_map().keySet().contains("1_edge"));
     }
 
+    @Test
+    public void verifyResourcesAvailabilityTest(){
+        assertFalse(cloud.verifyResourcesAvailability(new Resources(20, 0)));
+        assertFalse(cloud.verifyResourcesAvailability(new Resources(0, 20)));
+        assertTrue(cloud.verifyResourcesAvailability(new Resources(10, 10)));
+    }
+
     @After
     public void endMethod() {
     }

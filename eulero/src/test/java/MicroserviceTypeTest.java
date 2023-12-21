@@ -1,4 +1,5 @@
 
+import msarchitecture.archsmodeling.ConnectionMSType;
 import msarchitecture.archsmodeling.MicroserviceType;
 import msarchitecture.resourcesfeature.Resources;
 
@@ -7,6 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +46,16 @@ public class MicroserviceTypeTest {
         mst_1.addConnection(mst_2, 88);
         assertTrue(mst_1.searchConnection(mst_2));
         assertFalse(mst_1.searchConnection(mst_3));
+    }
+
+    @Test
+    public void verifyDAGSubtreeConsistencyTest(){
+        mst_1.addConnection(mst_2, 0);
+        mst_2.addConnection(mst_3, 0);
+        mst_3.addConnection(mst_1, 0);
+        mst_3.addConnection(mst_2, 0);
+        mst_3.addConnection(mst_3, 0);
+        assertTrue(mst_3.getConnections().size()==0);
     }
 
     @After
