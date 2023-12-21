@@ -9,7 +9,7 @@ import msarchitecture.locationfeature.CloudLocation;
 import msarchitecture.locationfeature.EdgeLocation;
 import msarchitecture.resourcesfeature.Resources;
 
-public class SMBuilder{
+public class SMFactory{
     public static HashMap<String,Microservice> createServiceMesh(MicroserviceType type,ArrayList<MicroserviceType> microserviceType_list_edge,CloudLocation cloud,EdgeLocation edge){
 
         //add microservices to cloud and link them
