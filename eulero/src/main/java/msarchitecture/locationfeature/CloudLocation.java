@@ -25,7 +25,13 @@ public class CloudLocation extends Location{
 
 	@Override
     public void addMicroservice(Microservice ms){
-        ms_map.put(ms.getName_ms(),ms);
+      if(!ms_map.containsValue(ms) && !ms_map.containsKey(ms.getName_ms())){
+          if(!verifyResourcesAvailability(ms.getMs_res())){
+              ms.setMs_res(new Resources(0, 0));
+              System.err.println("Requested resources not available. Set all resources of the microservice "+ms.getName_ms()+" to 0");
+          }
+          ms_map.put(ms.getName_ms(),ms);
+      }
     }
 
     @Override

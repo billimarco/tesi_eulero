@@ -41,7 +41,7 @@ public class Microservice{
         }else if(this.location instanceof EdgeLocation){
             this.name_ms=ms_type.getName_type()+"_edge";
         }
-        this.ms_res = ms_res;
+        this.ms_res=ms_res;
         location.addMicroservice(this);
         this.variateDistribution();
     }
@@ -75,7 +75,9 @@ public class Microservice{
     }
 
     public void setMs_res(Resources ms_res) {
-        this.ms_res = ms_res;
+        location.removeMicroservice(this.getName_ms());
+        this.ms_res=ms_res;
+        location.addMicroservice(this);
         this.variateDistribution();
     }
 

@@ -3,7 +3,6 @@ package msarchitecture.resourcesfeature;
 public class Resources{
     private int cpu;
     private int ram;
-	private final int minimalYield = 1;
 
     public Resources(int cpu,int ram){
         this.cpu=cpu;
@@ -27,6 +26,6 @@ public class Resources{
 	}
 
 	public double getCalculatePower(){
-		return cpu*0.8 + ram*0.2 + minimalYield;
+		return cpu*0.8 + ram*0.2 + 1;//that +1 rappresent the minimal yield of the function. Minimal return equals to 1.
 	}
 }

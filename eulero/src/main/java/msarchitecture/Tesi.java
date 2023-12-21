@@ -16,7 +16,7 @@ public class Tesi {
     public static void main(String[] args) throws Exception {
         AnalysisViewer an = new AnalysisViewer(12,0.01,15,15);
         Resources res_cloud = new Resources(6000, 6000);
-        Resources res_edge = new Resources(6000, 6000);
+        Resources res_edge = new Resources(1000, 1000);
         CloudLocation cloud = new CloudLocation(res_cloud);
         EdgeLocation edge = new EdgeLocation(res_edge);
 
@@ -33,6 +33,8 @@ public class Tesi {
         mst_4.addConnection(mst_5, 0.9);
         
         HashMap<String,Microservice> ms = SMBuilder.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
+
+        //AnalysisViewer Checker
         an.printServiceMeshConnections(ms);
         an.printPairwiseComparisonDominanceResults(ms,0.02);
         an.plotMicroserviceTypeComparisonDistributions(mst_1,mst_2);

@@ -67,7 +67,10 @@ public class MicroserviceType{
     public void addConnection(MicroserviceType to_mst,double probability){
         ConnectionMSType new_conn = new ConnectionMSType(this,to_mst,probability);
         connections.add(new_conn);
-        //TODO DAG verify
+        if(!verifyDAGSubtreeConsistency(this, new ArrayList<>())){
+            connections.remove(new_conn);
+            System.err.println("Adding connection from "+this.getName_type()+" to "+to_mst.getName_type()+" generate a cycle. Connection is not applied");
+        }
     }
 
     public void removeConnection(MicroserviceType to_mst){
@@ -90,6 +93,23 @@ public class MicroserviceType{
                 return true;
         }
         return false;
+    }
+
+    private boolean verifyDAGSubtreeConsistency(MicroserviceType actual_mst,ArrayList<MicroserviceType> mst_list){
+        mst_list.addLast(actual_mst);
+        if(actual_mst.getConnections().size()==0)
+            return true;
+        for(ConnectionMSType conns:actual_mst.getConnections()){
+            if(mst_list.contains(conns.getTo_MSType()))
+                return false;
+            ArrayList<MicroserviceType> mst_list_new = new ArrayList<>();
+            for(MicroserviceType mst:mst_list){
+                mst_list_new.addLast(mst);
+            }
+            if(!verifyDAGSubtreeConsistency(conns.getTo_MSType(),mst_list_new))
+                return false;
+        }
+        return true;
     }
 
     public Activity getSimpleActivity(){
