@@ -25,7 +25,7 @@ public class Resources{
 		this.ram = ram;
 	}
 
-	public double getCalculatePower(){
+	public double getComputingPower(){
 		return cpu*0.8 + ram*0.2 + 1;//that +1 rappresent the minimal yield of the function. Minimal return equals to 1.
 	}
 }

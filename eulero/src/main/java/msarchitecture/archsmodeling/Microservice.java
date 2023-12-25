@@ -140,22 +140,22 @@ public class Microservice{
         double EFT,LFT,rate;
         switch(DistributionName){
             case "TruncatedExponentialTime":
-                EFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-                LFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-                rate = ((TruncatedExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
+                EFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getComputingPower() / this.ms_res.getComputingPower());
+                LFT = ((TruncatedExponentialTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getComputingPower() / this.ms_res.getComputingPower());
+                rate = ((TruncatedExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getComputingPower() / this.ms_type.getQos_res().getComputingPower());
                 this.actual_time_distr = new TruncatedExponentialTime(EFT, LFT, rate);
                 break;
             case "ErlangTime":
-                rate = ((ErlangTime) this.ms_type.getQos()).getRate() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
+                rate = ((ErlangTime) this.ms_type.getQos()).getRate() * (this.ms_res.getComputingPower() / this.ms_type.getQos_res().getComputingPower());
                 this.actual_time_distr = new ErlangTime(((ErlangTime) this.ms_type.getQos()).getK(), rate);
                 break;
             case "ExponentialTime":
-                rate = ((ExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getCalculatePower() / this.ms_type.getQos_res().getCalculatePower());
+                rate = ((ExponentialTime) this.ms_type.getQos()).getRate().doubleValue() * (this.ms_res.getComputingPower() / this.ms_type.getQos_res().getComputingPower());
                 this.actual_time_distr = new ExponentialTime(BigDecimal.valueOf(rate));
                 break;
             case "UniformTime":
-                EFT = ((UniformTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
-                LFT = ((UniformTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getCalculatePower() / this.ms_res.getCalculatePower());
+                EFT = ((UniformTime) this.ms_type.getQos()).getEFT().doubleValue() * (this.ms_type.getQos_res().getComputingPower() / this.ms_res.getComputingPower());
+                LFT = ((UniformTime) this.ms_type.getQos()).getLFT().doubleValue() * (this.ms_type.getQos_res().getComputingPower() / this.ms_res.getComputingPower());
                 this.actual_time_distr = new UniformTime(EFT, LFT);
                 break;
             default:
