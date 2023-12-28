@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
-public class BuildCorrectGraphTest {
+public class ImplementationTest {
     AnalysisViewer an = new AnalysisViewer(12,0.01,15,15);
     Resources res_cloud;
     Resources res_edge;
