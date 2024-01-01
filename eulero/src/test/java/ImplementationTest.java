@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
 public class ImplementationTest {
     AnalysisViewer an = new AnalysisViewer(12,0.01,15,15);
     Resources res_cloud;
@@ -25,8 +26,8 @@ public class ImplementationTest {
 
     @Before
     public void initMethod() {
-        res_cloud = new Resources(12, 16);
-        res_edge = new Resources(4, 8);
+        res_cloud = new Resources(16, 16);
+        res_edge = new Resources(8, 8);
         cloud = new CloudLocation(res_cloud);
         edge = new EdgeLocation(res_edge);
     }
@@ -37,85 +38,143 @@ public class ImplementationTest {
         MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
         MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
         MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_5 = new MicroserviceType("5", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        mst_1.addConnection(mst_2, 0.1);
-        mst_1.addConnection(mst_3, 0.1);
-        mst_1.addConnection(mst_4, 0.1);
-        mst_2.addConnection(mst_5, 0.1);
-        HashMap<String,Microservice> ms = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1, mst_3, mst_4)), cloud, edge);
+        MicroserviceType mst_5 = new MicroserviceType("5", false,new TruncatedExponentialTime(1,3,5),new Resources(1, 1));
+        
+        mst_1.addConnection(mst_2, 1);
+        mst_1.addConnection(mst_3, 1);
+        mst_1.addConnection(mst_4, 1);
+        mst_2.addConnection(mst_5, 1);
+
+        HashMap<String,Microservice> sm = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1, mst_3, mst_4)), cloud, edge);
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_cloud"));
+
+        sm.get("5_cloud").setMs_res(new Resources(2, 2));
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_cloud"));
+
         System.out.println("|----------------> Service Mesh of Graph 1 <----------------|\n");
-        an.printServiceMeshConnections(ms);
+        an.printServiceMeshConnections(sm);
         System.out.println("\n|----------------> Service Mesh of Graph 1 <----------------|");
-        assertNotNull("ServiceMesh Creata",ms);
+        assertNotNull("ServiceMesh Creata",sm);
     }
 
     @Test
     public void createServiceMeshOfGraph2(){
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_5 = new MicroserviceType("5", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_6 = new MicroserviceType("6", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        mst_1.addConnection(mst_2, 0.1);
-        mst_1.addConnection(mst_3, 0.1);
-        mst_3.addConnection(mst_4, 0.1);
-        mst_3.addConnection(mst_5, 0.1);
-        mst_5.addConnection(mst_6, 0.1);
-        HashMap<String,Microservice> ms = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1, mst_3)), cloud, edge);
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0,2,3),new Resources(0, 0));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new UniformTime(0,2),new Resources(0, 1));
+        MicroserviceType mst_3 = new MicroserviceType("3", false,new UniformTime(0,2),new Resources(0, 0));
+        MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(0,2,3),new Resources(2, 2));
+        MicroserviceType mst_5 = new MicroserviceType("5", false,new TruncatedExponentialTime(0,2,3),new Resources(0, 0));
+        MicroserviceType mst_6 = new MicroserviceType("6", false,new UniformTime(0,2),new Resources(0, 0));
+        
+        mst_1.addConnection(mst_2, 0.8);
+        mst_1.addConnection(mst_3, 0.7);
+        mst_3.addConnection(mst_4, 0.3);
+        mst_3.addConnection(mst_5, 0.4);
+        mst_5.addConnection(mst_6, 0.5);
+        //mst_5.addConnection(mst_6, 0.1);
+        //mst_5.addConnection(mst_6, 0.9);
+
+
+        HashMap<String,Microservice> sm = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1, mst_3)), cloud, edge);
+
+        an.plotMicroserviceTypeComparisonDistributions(mst_5,mst_6);
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_cloud"));
+
+        sm.get("3_edge").setMs_res(new Resources(8,8));
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_edge"));
+
         System.out.println("|----------------> Service Mesh of Graph 2 <----------------|\n");
-        an.printServiceMeshConnections(ms);
+        an.printServiceMeshConnections(sm);
         System.out.println("\n|----------------> Service Mesh of Graph 2 <----------------|");
-        assertNotNull("ServiceMesh Creata",ms);
+        assertNotNull("ServiceMesh Creata",sm);
     }
 
     @Test
     public void createServiceMeshOfGraph3(){
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        mst_1.addConnection(mst_2, 0.1);
-        mst_1.addConnection(mst_3, 0.1);
-        HashMap<String,Microservice> ms = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_3)), cloud, edge);
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new UniformTime(1,4),new Resources(0, 0));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new UniformTime(0,2),new Resources(0, 0));
+        MicroserviceType mst_3 = new MicroserviceType("3", false,new UniformTime(0,2),new Resources(3, 0));
+
+        mst_1.addConnection(mst_2, 1);
+        mst_1.addConnection(mst_3, 0.5);
+
+        HashMap<String,Microservice> sm = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_3)), cloud, edge);
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_cloud"));
+
+        sm.get("3_edge").setMs_res(new Resources(6, 6));
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_edge"));
+
         System.out.println("|----------------> Service Mesh of Graph 3 <----------------|\n");
-        an.printServiceMeshConnections(ms);
+        an.printServiceMeshConnections(sm);
         System.out.println("\n|----------------> Service Mesh of Graph 3 <----------------|");
-        assertNotNull("ServiceMesh Creata",ms);
+        assertNotNull("ServiceMesh Creata",sm);
     }
 
     @Test
     public void createServiceMeshOfGraph4(){
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_5 = new MicroserviceType("5", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        mst_1.addConnection(mst_2, 0.1);
-        mst_1.addConnection(mst_3, 0.1);
-        mst_1.addConnection(mst_4, 0.1);
-        mst_3.addConnection(mst_5, 0.1);
-        mst_4.addConnection(mst_5, 0.1);
-        HashMap<String,Microservice> ms = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(0,2,5),new Resources(0, 0));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(0,2,5),new Resources(0, 0));
+        MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(0,2,5),new Resources(0, 0));
+        MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(0,2,5),new Resources(1, 1));
+        MicroserviceType mst_5 = new MicroserviceType("5", false,new UniformTime(0,2),new Resources(0, 0));
+        
+        mst_1.addConnection(mst_2, 0.5);
+        mst_1.addConnection(mst_3, 0.5);
+        mst_1.addConnection(mst_4, 0.9);
+        mst_3.addConnection(mst_5, 0.5);
+        mst_4.addConnection(mst_5, 0.5);
+
+        HashMap<String,Microservice> sm = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_1,mst_2,mst_4)), cloud, edge);
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_cloud"));
+
+        sm.get("4_edge").setMs_res(new Resources(6, 6));
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("1_edge"));
+
         System.out.println("|----------------> Service Mesh of Graph 4 <----------------|\n");
-        an.printServiceMeshConnections(ms);
+        an.printServiceMeshConnections(sm);
         System.out.println("\n|----------------> Service Mesh of Graph 4 <----------------|");
-        assertNotNull("ServiceMesh Creata",ms);
+        assertNotNull("ServiceMesh Creata",sm);
     }
 
     @Test
     public void createServiceMeshOfGraph5(){
-        MicroserviceType mst_1 = new MicroserviceType("1", true,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_2 = new MicroserviceType("2", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_3 = new MicroserviceType("3", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        MicroserviceType mst_4 = new MicroserviceType("4", false,new TruncatedExponentialTime(1,3,5),new Resources(0, 0));
-        mst_1.addConnection(mst_2, 0.1);
-        mst_2.addConnection(mst_3, 0.1);
-        mst_2.addConnection(mst_4, 0.1);
-        HashMap<String,Microservice> ms = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_2,mst_3)), cloud, edge);
+        MicroserviceType mst_1 = new MicroserviceType("1", true,new UniformTime(0,2),new Resources(0, 0));
+        MicroserviceType mst_2 = new MicroserviceType("2", false,new UniformTime(0,2),new Resources(0, 2));
+        MicroserviceType mst_3 = new MicroserviceType("3", false,new UniformTime(0,2),new Resources(0, 0));
+        MicroserviceType mst_4 = new MicroserviceType("4", false,new UniformTime(0,2),new Resources(0, 0));
+
+        mst_1.addConnection(mst_2, 1);
+        mst_2.addConnection(mst_3, 0.2);
+        mst_2.addConnection(mst_4, 0.2);
+
+        HashMap<String,Microservice> sm = SMFactory.createServiceMesh(mst_1,new ArrayList<MicroserviceType>(Arrays.asList(mst_2,mst_3)), cloud, edge);
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("2_cloud"));
+
+        sm.get("2_edge").setMs_res(new Resources(1, 1));
+
+        an.printPairwiseComparisonDominanceResults(sm,0.02);
+        an.plotMicroserviceQOSComparisonDistributions(sm.get("2_edge"));
+
         System.out.println("|----------------> Service Mesh of Graph 5 <----------------|\n");
-        an.printServiceMeshConnections(ms);
+        an.printServiceMeshConnections(sm);
         System.out.println("\n|----------------> Service Mesh of Graph 5 <----------------|");
-        assertNotNull("ServiceMesh Creata",ms);
+        assertNotNull("ServiceMesh Creata",sm);
     }
 
     @After
