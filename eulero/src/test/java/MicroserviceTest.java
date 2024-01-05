@@ -51,9 +51,9 @@ public class MicroserviceTest {
 
     @Test
     public void getPairwiseComparisonDominanceValueTest(){
-        assertTrue(ms_1.getPairwiseComparisonDominanceValue(12,0.01,15,15)>0.5);
-        assertTrue(ms_2.getPairwiseComparisonDominanceValue(12,0.01,15,15)<0.5);
-        assertTrue(ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15)>0.48 && ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15)<0.52);
+        assertTrue(ms_1.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)>0.5);
+        assertTrue(ms_2.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)<0.5);
+        assertTrue(ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)>0.48 && ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)<0.52);
     }
 
     @After

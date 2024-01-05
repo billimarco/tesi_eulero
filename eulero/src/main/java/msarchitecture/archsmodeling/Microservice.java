@@ -164,15 +164,22 @@ public class Microservice{
         }
     }
 
-    public double getPairwiseComparisonDominanceValue(int timeLimit,double timeStep,int CThreshold,int QThreshold){
-        Activity ms_comp = getCompositeActivity();
-        Activity mst_comp = ms_type.getCompositeActivity();
-        double[] mst_comp_cdf = mst_comp.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        double[] ms_comp_cdf = ms_comp.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
-        double[] ms_comp_pdf = new EvaluationResult("ms_comp_pdf", ms_comp_cdf, 0, ms_comp_cdf.length, 0.01, 0).pdf();
+    public double getPairwiseComparisonDominanceValue(int timeLimit,double timeStep,int CThreshold,int QThreshold,boolean composed){
+        Activity ms_act = getCompositeActivity();
+        Activity mst_act = ms_type.getCompositeActivity();
+        if(composed){
+            ms_act = getCompositeActivity();
+            mst_act = ms_type.getCompositeActivity();
+        }else{
+            ms_act = getSimpleActivity();
+            mst_act = ms_type.getSimpleActivity();
+        }
+        double[] mst_act_cdf = mst_act.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] ms_act_cdf = ms_act.analyze(BigDecimal.valueOf(timeLimit), BigDecimal.valueOf(timeStep), new SDFHeuristicsVisitor(BigInteger.valueOf(CThreshold), BigInteger.valueOf(QThreshold), new TruncatedExponentialApproximation()));
+        double[] ms_act_pdf = new EvaluationResult("ms_act_pdf", ms_act_cdf, 0, ms_act_cdf.length, 0.01, 0).pdf();
         double result = 0;
-        for(int i=0;i<mst_comp_cdf.length;i++){
-            result += (1-mst_comp_cdf[i])*ms_comp_pdf[i]*timeStep;
+        for(int i=0;i<mst_act_cdf.length;i++){
+            result += (1-mst_act_cdf[i])*ms_act_pdf[i]*timeStep;
         }
         return result;
     }

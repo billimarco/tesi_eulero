@@ -71,18 +71,19 @@ public class AnalysisViewer {
 
     public void printPairwiseComparisonDominanceResults(HashMap<String,Microservice> ms,double error){
         double acceptance = 0.5-error;
-        System.out.println("------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("Pairwise-Comparison Dominance Analysis");
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Error: "+error+"\tAcceptance Value: "+acceptance);
-        System.out.println("------------------------------------------------------------");
-        System.out.printf("%-15s   %-1s   %-15s   %-1s   %-15s%n", "node", "|", "pcd-value", "|", "qos satisfied");
-        System.out.println("------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("Error: "+error+"\tAcceptance Value: >="+acceptance);
+        System.out.println("------------------------------------------------------------------------");
+        System.out.printf("%-15s   %-1s   %-20s   %-1s   %-20s%n", "node", "|", "pcd-value composite", "|", "pcd-value simple");
+        System.out.println("------------------------------------------------------------------------");
         ms.forEach((key, value) -> {
-            double pcdvalue = value.getPairwiseComparisonDominanceValue(this.timeLimit,this.timeStep,this.CThreshold,this.QThreshold);
-            System.out.printf("%-15s   %-1s   %-15.3f   %-1s   %-15s%n", key, "|", pcdvalue, "|", pcdvalue>acceptance);
+            double pcdvaluecomp = value.getPairwiseComparisonDominanceValue(this.timeLimit,this.timeStep,this.CThreshold,this.QThreshold,true);
+            double pcdvaluesimp = value.getPairwiseComparisonDominanceValue(this.timeLimit,this.timeStep,this.CThreshold,this.QThreshold,false);
+            System.out.printf("%-15s   %-1s   %-20.3f   %-1s   %-20.3f%n", key, "|", pcdvaluecomp, "|", pcdvaluesimp);
         });
-        System.out.println("------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------");
     }
 
     public void plotMicroserviceTypeComparisonDistributions(MicroserviceType mst1, MicroserviceType mst2){
