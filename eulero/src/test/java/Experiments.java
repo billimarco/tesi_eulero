@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
 import org.oristool.eulero.modeling.stochastictime.UniformTime;
-public class ImplementationTest {
+public class Experiments {
     AnalysisViewer an = new AnalysisViewer(12,0.01,15,15);
     Resources res_cloud;
     Resources res_edge;
