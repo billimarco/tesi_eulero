@@ -1,10 +1,4 @@
 
-import msarchitecture.archsmodeling.Microservice;
-import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.locationfeature.CloudLocation;
-import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.resourcesfeature.Resources;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -13,6 +7,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
+
+import msarchitecture.msarchitecture.CloudLocation;
+import msarchitecture.msarchitecture.EdgeLocation;
+import msarchitecture.msarchitecture.Microservice;
+import msarchitecture.msarchitecture.MicroserviceType;
+import msarchitecture.msarchitecture.Resources;
 
 public class LocationTest {
     MicroserviceType mst_1;

@@ -1,13 +1,7 @@
-package msarchitecture.utils;
+package msarchitecture.msarchitecture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import msarchitecture.archsmodeling.ConnectionMSType;
-import msarchitecture.archsmodeling.Microservice;
-import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.locationfeature.CloudLocation;
-import msarchitecture.locationfeature.EdgeLocation;
-import msarchitecture.resourcesfeature.Resources;
 
 public class SMFactory{
     public static HashMap<String,Microservice> createServiceMesh(MicroserviceType type,ArrayList<MicroserviceType> microserviceType_list_edge,CloudLocation cloud,EdgeLocation edge){
@@ -72,5 +66,15 @@ public class SMFactory{
             takeMicroserviceTypeConnected(list,conn_list.get(i).getTo_MSType());
         }
         return list;
+    }
+
+    public static void printServiceMeshConnections(HashMap<String,Microservice> ms){
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Service Mesh Connections");
+        System.out.println("------------------------------------------------------------");
+        ms.forEach((key, value) -> {
+            System.out.println(value.toString());
+        });
+        System.out.println("------------------------------------------------------------");
     }
 }

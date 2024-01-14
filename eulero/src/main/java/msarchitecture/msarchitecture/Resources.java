@@ -1,4 +1,4 @@
-package msarchitecture.resourcesfeature;
+package msarchitecture.msarchitecture;
 
 public class Resources{
     private int cpu;

@@ -1,4 +1,4 @@
-package msarchitecture.archsmodeling;
+package msarchitecture.msarchitecture;
 
 public class ConnectionMSType{
     private MicroserviceType from_MSType;

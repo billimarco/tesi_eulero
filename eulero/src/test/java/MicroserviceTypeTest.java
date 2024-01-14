@@ -1,8 +1,4 @@
 
-import msarchitecture.archsmodeling.ConnectionMSType;
-import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.resourcesfeature.Resources;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -14,6 +10,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
+
+import msarchitecture.msarchitecture.ConnectionMSType;
+import msarchitecture.msarchitecture.MicroserviceType;
+import msarchitecture.msarchitecture.Resources;
 public class MicroserviceTypeTest {
     MicroserviceType mst_1;
     MicroserviceType mst_2;

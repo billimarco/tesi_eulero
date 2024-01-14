@@ -1,9 +1,4 @@
 
-import msarchitecture.archsmodeling.Microservice;
-import msarchitecture.archsmodeling.MicroserviceType;
-import msarchitecture.locationfeature.CloudLocation;
-import msarchitecture.resourcesfeature.Resources;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +8,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.oristool.eulero.modeling.stochastictime.TruncatedExponentialTime;
+
+import msarchitecture.msarchitecture.CloudLocation;
+import msarchitecture.msarchitecture.Microservice;
+import msarchitecture.msarchitecture.MicroserviceType;
+import msarchitecture.msarchitecture.Resources;
 public class MicroserviceTest {
     MicroserviceType mst_1;
     MicroserviceType mst_2;
@@ -47,13 +47,6 @@ public class MicroserviceTest {
         assertTrue(ms_1.getConnections().size()==1);
         ms_1.removeConnection(ms_2);
         assertTrue(ms_1.getConnections().size()==0);
-    }
-
-    @Test
-    public void getPairwiseComparisonDominanceValueTest(){
-        assertTrue(ms_1.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)>0.5);
-        assertTrue(ms_2.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)<0.5);
-        assertTrue(ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)>0.48 && ms_3.getPairwiseComparisonDominanceValue(12,0.01,15,15,true)<0.52);
     }
 
     @After

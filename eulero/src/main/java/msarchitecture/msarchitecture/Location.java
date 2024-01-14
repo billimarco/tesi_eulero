@@ -1,9 +1,6 @@
-package msarchitecture.locationfeature;
+package msarchitecture.msarchitecture;
 
 import java.util.HashMap;
-
-import msarchitecture.archsmodeling.Microservice;
-import msarchitecture.resourcesfeature.Resources;
 
 public abstract class Location{
     Resources loc_res;
